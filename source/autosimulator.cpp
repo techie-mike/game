@@ -19,11 +19,22 @@ void AutosimController::getManipulatorData ()
 }
 
 void AutosimController::startProgram () {
-    sf::RenderWindow* window = new sf::RenderWindow (sf::VideoMode(800, 600), "SFML works!");
-    main_window_ = window;
+    autosimModel_.createDefaultObjects ();
 
-    mainController ();
+    autosimView_.createWindow (800, 600);
+
+//    sf::RenderWindow* window = new sf::RenderWindow (sf::VideoMode(800, 600), "SFML works!");
+    main_window_ = autosimView_.main_window_;
+
+//    sf::Texture background;
+//    background.loadFromFile("map.png");
+//    sf::Sprite rectangle;
+//    rectangle.scale (sf::Vector2f(8000.f, 4000.f));
+//    rectangle.setTexture (background);
+//    window->draw(rectangle);
+//    window->display();
 //    getManipulatorData ();
+    managerController ();
 
 }
 
@@ -39,7 +50,7 @@ void AutosimController::testManipulator () {
             manipulator_data_.hand_brake);
 }
 
-void AutosimController::mainController () {
+void AutosimController::managerController () {
     sf::Clock clock;
 
     unsigned __int64 time_cycle_physics = NUM_UNITS_IN_ONE_SEC / FREQUENCY_PHYSICS;

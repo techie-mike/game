@@ -28,7 +28,7 @@ project(${PROJECT_NAME})
 set(SFML_DIR "${PROJECT_SOURCE_DIR}/SFML-2.5.1/lib/cmake/SFML")
 
 find_package(SFML 2.5 COMPONENTS graphics audio network REQUIRED)
-add_executable(${PROJECT_NAME} source/main.cpp source/autosimulator.cpp source/autosimulator.h source/controller/inputController.cpp source/controller/inputController.h source/models.cpp source/models.h source/controller/manipulatorData.h)
+add_executable(${PROJECT_NAME} source/main.cpp source/autosimulator.cpp source/autosimulator.h source/controller/inputController.cpp source/controller/inputController.h source/models.cpp source/models.h source/controller/manipulatorData.h source/view.cpp source/view.h source/objects.cpp source/objects.h)
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio sfml-network)
 
 set(GCC_COVERAGE_COMPILE_FLAGS "-g -Wall -Wextra -Weffc++ -Wc++0x-compat -Wc++11-compat \

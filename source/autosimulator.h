@@ -9,6 +9,7 @@
 //-------------------------------
 #include "controller/inputController.h"
 #include "models.h"
+#include "view.h"
 //-------------------------------
 
 #include <stdio.h>
@@ -27,10 +28,13 @@ private:
     ManipulatorData   manipulator_data_;
     sf::RenderWindow* main_window_;
 
+    AutosimModel autosimModel_;
+    AutosimView  autosimView_;
+
 
     void getManipulatorData ();
     void getManipulatorDataFromDevice (void (*func)(ManipulatorData&));
-    void mainController ();
+    void managerController ();
 
 public:
     void startProgram ();
