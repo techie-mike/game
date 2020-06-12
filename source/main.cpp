@@ -1,5 +1,4 @@
 
-
 #include "autosimulator.h"
 
 int main()

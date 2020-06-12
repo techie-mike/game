@@ -41,8 +41,9 @@ void AutosimController::testManipulator () {
 
 void AutosimController::mainController () {
     sf::Clock clock;
-    unsigned __int64 time_cycle_physics = 1000000 / FREQUENCY_PHYSICS;
-    unsigned __int64 time_cycle_display = 1000000 / FREQUENCY_DISPLAY;
+
+    unsigned __int64 time_cycle_physics = NUM_UNITS_IN_ONE_SEC / FREQUENCY_PHYSICS;
+    unsigned __int64 time_cycle_display = NUM_UNITS_IN_ONE_SEC / FREQUENCY_DISPLAY;
 
     while (main_window_->isOpen()) {
         sf::Time time_last_cycle = clock.restart ();
