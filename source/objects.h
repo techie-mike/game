@@ -9,20 +9,28 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
+#include <SFML/Graphics.hpp>
+
 #include "controller/manipulatorData.h"
+
+struct AdditionViewData {
+    sf::RenderWindow* window{};
+    sf::Vector2f position_in_window;
+    float scale;
+};
 
 struct BaseObject
 {
-    sf::Vector2f world_position;    // unit: metres
-    sf::Vector2f size_object;       // unit: meters
+    sf::Vector2f position;    // unit: metres
+    sf::Vector2f size_object; // unit: meters
 
     // Positive clockwise direction
-    float world_rotation_angle;     // unit: degrees
+    float rotation_angle;     // unit: degrees
 
     sf::Texture texture;
-    sf::Sprite  sprite;
+    sf::RectangleShape sprite;
 
-    virtual void draw() = 0;
+    virtual void draw (const AdditionViewData &additionData) = 0;
     virtual void calculationNewState() = 0;
 };
 
@@ -50,8 +58,8 @@ struct Wheel :
 
 //    float getPowerOnWheel();
 
-    virtual void draw();
-    virtual void calculationNewState();
+    void draw (const AdditionViewData &additionData) override;
+    void calculationNewState() override;
 private:
 
 };
@@ -95,8 +103,8 @@ struct Car :
     Car();
    ~Car();
 
-    virtual void draw();
-    virtual void calculationNewState();
+    void draw (const AdditionViewData &additionData) override;
+    void calculationNewState() override;
 };
 
 struct settingsCar {

@@ -20,24 +20,27 @@ void AutosimModel::createDefaultObjects () {
 
 void AutosimModel::loadDefaultTextureInCar (Car* car) {
     car->texture.loadFromFile ("car.png");
-    car->sprite.scale      (sf::Vector2f(4.2, 1.6));
+    car->texture.setSmooth (true);
+    car->sprite.setSize (sf::Vector2f(1.8, 4.2));
     car->sprite.setOrigin  (car->size_object / 2.0f);
-    car->sprite.setTexture (car->texture);
+    car->sprite.setTexture (&car->texture);
 
     for (auto &i : car->wheel) {
         i.point->size_object = sf::Vector2f();
 
         i.point->wheel_diameter = 0.63;
-        i.point->sprite.scale     (sf::Vector2f(0.24, 0.63));
-        i.point->sprite.setOrigin (i.point->size_object / 2.0f);
+        i.point->size_object = sf::Vector2f(0.25, 0.60);
+//        i.point->sprite.setOrigin (i.point->size_object / 2.0f);
 
         i.point->texture.loadFromFile ("tire.png");
-        i.point->sprite.setTexture (i.point->texture);
+        i.point->texture.setSmooth (true);
+
+        i.point->sprite.setTexture (&i.point->texture);
     }
 }
 
 void AutosimModel::createDefaultSettingsForCar (Car* car) {
-    car->size_object      = sf::Vector2f (1.6, 4.2);
+    car->size_object      = sf::Vector2f (1.9, 4.2);
     car->weight_all_car   = 1500.0;
     car->drag_coefficient = 0.15;
 
@@ -52,6 +55,14 @@ void AutosimModel::createDefaultSettingsForCar (Car* car) {
     car->wheel[3].is_pulling = true;
 
     loadDefaultTextureInCar (car);
+
+//    float offset_right = 0.8;
+//    float offset_front = 0.8;
+
+    car->wheel[0].point->position = sf::Vector2f (-0.69, -1.28);
+    car->wheel[1].point->position = sf::Vector2f ( 0.69, -1.28);
+    car->wheel[2].point->position = sf::Vector2f (-0.69,  1.38);
+    car->wheel[3].point->position = sf::Vector2f ( 0.69,  1.38);
 
 //    car.name_file_texture_car   = "car.png";
 //    car.name_file_texture_wheel = "tire.png";

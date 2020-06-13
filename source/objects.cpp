@@ -24,7 +24,6 @@ void Car::powerDistributionOnWheels () {
     }
 }
 
-//void Car::draw() {}
 
 Car::Car ():
     power_engine_now (0),
@@ -33,6 +32,7 @@ Car::Car ():
     for (auto &i : wheel) {
         i.point = new Wheel;
         i.is_pulling = false;
+        i.point->parent = this;
     }
 }
 
@@ -40,4 +40,39 @@ Car::~Car () {
     for (auto &i: wheel) {
         delete i.point;
     }
+}
+
+void Car::draw (const AdditionViewData &additionData) {
+    for (auto & i : wheel) {
+        i.point->draw (additionData);
+    }
+
+    sf::Vector2f now_position = position * additionData.scale + additionData.position_in_window;
+    sf::Vector2f now_size = size_object * additionData.scale;
+//    sprite.setSize (sf::Vector2f (100.f, 200.f));
+
+    sprite.setSize (now_size);
+    sprite.setOrigin (now_size / 2.f);
+    sprite.setPosition (now_position);
+    additionData.window->draw (sprite);
+}
+
+void Wheel::draw (const AdditionViewData &additionData) {
+    sf::Vector2f now_position = (parent->position + position) * additionData.scale + additionData.position_in_window;
+    sf::Vector2f now_size = size_object * additionData.scale;
+
+//    sf::Vector2f now_position = (parent->position + position) * 100.f;
+    sprite.setSize (now_size);
+    sprite.setOrigin (now_size / 2.f);
+
+    sprite.setPosition (now_position);
+    additionData.window->draw (sprite);
+}
+
+void Car::calculationNewState () {
+
+}
+
+void Wheel::calculationNewState () {
+
 }

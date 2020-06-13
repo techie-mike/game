@@ -10,9 +10,18 @@
 
 struct AutosimView {
     void createWindow (int width, int height);
-    void drawOnWindow (BaseObject* objects, unsigned int asctive_objects);
+    void drawOnWindow (BaseObject** objects, unsigned int active_objects);
 //    void textureLoading ();
-    sf::RenderWindow* main_window_;
+
+    AdditionViewData additionViewData;
+    sf::RenderWindow* main_window;
+
+    struct {
+        sf::Vector2f position;
+        float rotation_angle;
+    } camera;
+
+    void setCameraPosition (BaseObject* focus_on);
 
 };
 #endif //GAME_VIEW_H

@@ -12,7 +12,7 @@ struct AutosimModel {
     void createDefaultObjects ();
 
     BaseObject* objects[10];    // temporary
-    unsigned int numActiveObjects;
+    unsigned int numActiveObjects{};
 
     void createDefaultSettingsForCar (Car* car);
     void loadDefaultTextureInCar (Car* car);

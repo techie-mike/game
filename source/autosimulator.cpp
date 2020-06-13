@@ -20,11 +20,12 @@ void AutosimController::getManipulatorData ()
 
 void AutosimController::startProgram () {
     autosimModel_.createDefaultObjects ();
-
     autosimView_.createWindow (800, 600);
 
+    autosimView_.drawOnWindow (autosimModel_.objects, autosimModel_.numActiveObjects);
+
 //    sf::RenderWindow* window = new sf::RenderWindow (sf::VideoMode(800, 600), "SFML works!");
-    main_window_ = autosimView_.main_window_;
+    main_window_ = autosimView_.main_window;
 
 //    sf::Texture background;
 //    background.loadFromFile("map.png");
@@ -34,6 +35,7 @@ void AutosimController::startProgram () {
 //    window->draw(rectangle);
 //    window->display();
 //    getManipulatorData ();
+
     managerController ();
 
 }
