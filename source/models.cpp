@@ -9,12 +9,20 @@
 void AutosimModel::createDefaultObjects () {
     Car* main_car = new Car;
 
-    settingsCar settings;
+//    settingsCar settings;
     createDefaultSettingsForCar (main_car);
 
-
-//    loadDefaultTextureInCar (main_car);
     objects[numActiveObjects] = main_car;
+    numActiveObjects++;
+
+
+    Car* add_car = new Car;
+    createDefaultSettingsForCar (add_car);
+    add_car->position = sf::Vector2f (2.f, 2.5f);
+    add_car->rotation_angle = 75.f;
+    add_car->wheel[2].point->rotation_angle = 0.f;
+
+    objects[numActiveObjects] = add_car;
     numActiveObjects++;
 }
 
@@ -54,6 +62,7 @@ void AutosimModel::createDefaultSettingsForCar (Car* car) {
     car->wheel[2].is_pulling = true;
     car->wheel[3].is_pulling = true;
 
+
     loadDefaultTextureInCar (car);
 
 //    float offset_right = 0.8;
@@ -66,4 +75,12 @@ void AutosimModel::createDefaultSettingsForCar (Car* car) {
 
 //    car.name_file_texture_car   = "car.png";
 //    car.name_file_texture_wheel = "tire.png";
+}
+
+void AutosimModel::calculationNewPositions (unsigned long long different_time) {
+    float cycle_time = static_cast<float> (different_time) / 1000000;
+
+    for (size_t i = 0; i <  numActiveObjects; i++) {
+        objects[i]->calculationNewState ();
+    }
 }

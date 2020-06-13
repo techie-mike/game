@@ -13,9 +13,17 @@
 
 #include "controller/manipulatorData.h"
 
+struct DataOfCamera {
+    sf::Vector2f position;
+    float rotation_angle;
+};
+
 struct AdditionViewData {
     sf::RenderWindow* window{};
-    sf::Vector2f position_in_window;
+    sf::Vector2f offset_in_window;
+
+    DataOfCamera camera;
+
     float scale;
 };
 
@@ -25,7 +33,7 @@ struct BaseObject
     sf::Vector2f size_object; // unit: meters
 
     // Positive clockwise direction
-    float rotation_angle;     // unit: degrees
+    float rotation_angle{};     // unit: degrees
 
     sf::Texture texture;
     sf::RectangleShape sprite;

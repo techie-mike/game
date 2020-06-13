@@ -4,6 +4,9 @@
 
 #include "objects.h"
 
+#include <cmath>
+#include "cmath"
+
 //float Car::getPower () {
 //    return MAX_POWER_ENGINE;
 //}
@@ -47,25 +50,61 @@ void Car::draw (const AdditionViewData &additionData) {
         i.point->draw (additionData);
     }
 
-    sf::Vector2f now_position = position * additionData.scale + additionData.position_in_window;
+    sf::Vector2f now_position = (position - additionData.camera.position) * additionData.scale
+            + additionData.offset_in_window;
+
     sf::Vector2f now_size = size_object * additionData.scale;
 //    sprite.setSize (sf::Vector2f (100.f, 200.f));
 
     sprite.setSize (now_size);
     sprite.setOrigin (now_size / 2.f);
     sprite.setPosition (now_position);
+    sprite.setRotation (rotation_angle);
+
+    sprite.setPosition (now_position);
     additionData.window->draw (sprite);
 }
 
 void Wheel::draw (const AdditionViewData &additionData) {
-    sf::Vector2f now_position = (parent->position + position) * additionData.scale + additionData.position_in_window;
+    sf::Vector2f now_position = (parent->position + position) * additionData.scale + additionData.offset_in_window;
     sf::Vector2f now_size = size_object * additionData.scale;
+    sf::Vector2f centre_of_car = (position) * additionData.scale;
 
 //    sf::Vector2f now_position = (parent->position + position) * 100.f;
+
+    float radian_rotation_angle = (parent->rotation_angle * 3.1415f) / 180.f;
+    sf::Vector2f new_position{};
+    new_position.x = centre_of_car.x * std::cos (radian_rotation_angle)
+                   - centre_of_car.y * std::sin (radian_rotation_angle);
+
+    new_position.y = centre_of_car.x * std::sin (radian_rotation_angle)
+                   + centre_of_car.y * std::cos (radian_rotation_angle);
+
+    new_position += now_position - centre_of_car;
     sprite.setSize (now_size);
     sprite.setOrigin (now_size / 2.f);
 
-    sprite.setPosition (now_position);
+    sprite.setPosition (new_position);
+
+//    additionData.window->draw (sprite);
+
+/*
+    //-------------------------------------------------
+    //      Centre of car
+    sf::CircleShape shape(10);
+    shape.setOrigin (sf::Vector2f(10,10));
+//
+//// set the shape color to green
+    shape.setFillColor(sf::Color(250, 0, 0));
+    shape.setPosition (now_position - centre_of_car);
+    additionData.window->draw (shape);
+    //-------------------------------------------------
+    */
+    // Then we will be rotate wheel
+
+    sprite.setRotation (parent->rotation_angle + rotation_angle);
+
+//    sprite.setRotation (45.f);
     additionData.window->draw (sprite);
 }
 

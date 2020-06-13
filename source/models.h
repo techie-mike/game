@@ -17,6 +17,9 @@ struct AutosimModel {
     void createDefaultSettingsForCar (Car* car);
     void loadDefaultTextureInCar (Car* car);
 
+
+    void calculationNewPositions (unsigned long long different_time);
+
     float getCoeffOfRollingFrictionOnArea();
     float getCoeffOfSlidingFrictionForceOnArea();
 };

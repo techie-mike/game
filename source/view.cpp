@@ -9,9 +9,13 @@ void AutosimView::createWindow (int width, int height) {
 }
 
 void AutosimView::drawOnWindow (BaseObject** objects, unsigned int active_objects) {
+    main_window->clear();
+    //----------------------------------------------------------------------------
     additionViewData.window = main_window;
     additionViewData.scale = 100;
-    additionViewData.position_in_window = sf::Vector2f (sf::Vector2f (400, 300));
+    additionViewData.offset_in_window = sf::Vector2f (sf::Vector2f (400, 300));
+    additionViewData.camera = camera;
+    //----------------------------------------------------------------------------
 
     setCameraPosition (objects[0]);
 

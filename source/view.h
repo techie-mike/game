@@ -16,10 +16,7 @@ struct AutosimView {
     AdditionViewData additionViewData;
     sf::RenderWindow* main_window;
 
-    struct {
-        sf::Vector2f position;
-        float rotation_angle;
-    } camera;
+    DataOfCamera camera;
 
     void setCameraPosition (BaseObject* focus_on);
 

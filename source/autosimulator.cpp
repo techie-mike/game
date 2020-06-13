@@ -63,11 +63,12 @@ void AutosimController::managerController () {
 
         if (time_last_cycle.asMicroseconds () >= time_cycle_physics) {
             // model
-
+            autosimModel_.calculationNewPositions (time_last_cycle.asMicroseconds ());
             getManipulatorData ();
         }
 
         if (time_last_cycle.asMicroseconds () >= time_cycle_display) {
+            autosimView_.drawOnWindow (autosimModel_.objects, autosimModel_.numActiveObjects);
             // display
         }
     }
