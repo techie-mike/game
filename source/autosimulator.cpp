@@ -20,9 +20,11 @@ void AutosimController::getManipulatorData ()
 
 void AutosimController::startProgram () {
     autosimModel_.createDefaultObjects ();
+    autosimModel_.createDefaultMap ();
+
     autosimView_.createWindow (800, 600);
 
-    autosimView_.drawOnWindow (autosimModel_.objects, autosimModel_.numActiveObjects);
+//    autosimView_.drawOnWindow (autosimModel_.objects, autosimModel_.numActiveObjects);
 
 //    sf::RenderWindow* window = new sf::RenderWindow (sf::VideoMode(800, 600), "SFML works!");
     main_window_ = autosimView_.main_window;
@@ -55,21 +57,37 @@ void AutosimController::testManipulator () {
 void AutosimController::managerController () {
     sf::Clock clock;
 
-    unsigned __int64 time_cycle_physics = NUM_UNITS_IN_ONE_SEC / FREQUENCY_PHYSICS;
-    unsigned __int64 time_cycle_display = NUM_UNITS_IN_ONE_SEC / FREQUENCY_DISPLAY;
+    unsigned __int64 time_last_physics = 0;
+    unsigned __int64 time_last_display = 0;
 
-    while (main_window_->isOpen()) {
-        sf::Time time_last_cycle = clock.restart ();
+    const unsigned __int64 time_cycle_physics = NUM_UNITS_IN_ONE_SEC / FREQUENCY_PHYSICS;
+    const unsigned __int64 time_cycle_display = NUM_UNITS_IN_ONE_SEC / FREQUENCY_DISPLAY;
 
-        if (time_last_cycle.asMicroseconds () >= time_cycle_physics) {
+//    autosimView_.main_window->setVerticalSyncEnabled(false);
+
+    getManipulatorData ();
+
+    while (autosimView_.main_window->isOpen()) {
+//        sf::Time time_last_cycle = clock.getElapsedTime();
+
+        if ((clock.getElapsedTime().asMicroseconds () - time_last_physics) >= time_cycle_physics) {
+            unsigned long long send_time = clock.getElapsedTime().asMicroseconds () - time_last_physics;
+            time_last_physics = clock.getElapsedTime().asMicroseconds ();
             // model
-            autosimModel_.calculationNewPositions (time_last_cycle.asMicroseconds ());
+            autosimModel_.calculationNewPositions (send_time, manipulator_data_);
+            autosimView_.setCameraPosition (autosimModel_.objects[1]);
             getManipulatorData ();
+            // TEMPORARILY //
+//            autosimModel_.objects[0].
+            //-------------//
+
         }
 
-        if (time_last_cycle.asMicroseconds () >= time_cycle_display) {
+
+        if ((clock.getElapsedTime().asMicroseconds () - time_last_display) >= time_cycle_display) {
+            time_last_display = clock.getElapsedTime().asMicroseconds ();
             autosimView_.drawOnWindow (autosimModel_.objects, autosimModel_.numActiveObjects);
-            // display
+
         }
     }
 }

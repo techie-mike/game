@@ -19,10 +19,10 @@ class AutosimController {
 private:
     // Number of units of time per second
     // that means then 1sec = 1'000'000 units of time (microseconds)
-    const int NUM_UNITS_IN_ONE_SEC = 1000000;
+    const long long NUM_UNITS_IN_ONE_SEC = 1000000;
 
-    const int FREQUENCY_PHYSICS    = 1000;
-    const int FREQUENCY_DISPLAY    = 60;
+    const long long FREQUENCY_PHYSICS    = 1000;
+    const long long FREQUENCY_DISPLAY    = 60;
 
 
     ManipulatorData   manipulator_data_;

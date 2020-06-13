@@ -10,6 +10,8 @@ void AutosimView::createWindow (int width, int height) {
 
 void AutosimView::drawOnWindow (BaseObject** objects, unsigned int active_objects) {
     main_window->clear();
+
+
     //----------------------------------------------------------------------------
     additionViewData.window = main_window;
     additionViewData.scale = 100;
@@ -17,12 +19,21 @@ void AutosimView::drawOnWindow (BaseObject** objects, unsigned int active_object
     additionViewData.camera = camera;
     //----------------------------------------------------------------------------
 
-    setCameraPosition (objects[0]);
+    setCameraPosition (objects[1]);
 
     for (size_t i = 0; i < active_objects; i++) {
+        if (objects[i] == nullptr) {
+            printf ("Error in points on objects!\n");
+            exit(1);
+        }
+//        additionViewData.camera.rotation_angle = 30.f;
+
         objects[i]->draw (additionViewData);
     }
+
     main_window->display();
+//    main_window->requestFocus();
+
 
 }
 

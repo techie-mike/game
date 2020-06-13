@@ -12,16 +12,17 @@ struct AutosimModel {
     void createDefaultObjects ();
 
     BaseObject* objects[10];    // temporary
-    unsigned int numActiveObjects{};
+    unsigned int numActiveObjects = 1;
+    BaseObject* main_car;
 
     void createDefaultSettingsForCar (Car* car);
-    void loadDefaultTextureInCar (Car* car);
+    void loadDefaultTextureInCar     (Car* car);
+
+    void createDefaultMap ();
+
+    void calculationNewPositions (unsigned long long different_time, ManipulatorData &last_manipulator_data);
 
 
-    void calculationNewPositions (unsigned long long different_time);
-
-    float getCoeffOfRollingFrictionOnArea();
-    float getCoeffOfSlidingFrictionForceOnArea();
 };
 
 #endif //GAME_MODELS_H

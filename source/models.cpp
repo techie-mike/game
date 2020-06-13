@@ -15,15 +15,16 @@ void AutosimModel::createDefaultObjects () {
     objects[numActiveObjects] = main_car;
     numActiveObjects++;
 
+    this->main_car = main_car;
 
-    Car* add_car = new Car;
+/*    Car* add_car = new Car;
     createDefaultSettingsForCar (add_car);
     add_car->position = sf::Vector2f (2.f, 2.5f);
     add_car->rotation_angle = 75.f;
     add_car->wheel[2].point->rotation_angle = 0.f;
 
     objects[numActiveObjects] = add_car;
-    numActiveObjects++;
+    numActiveObjects++;*/
 }
 
 void AutosimModel::loadDefaultTextureInCar (Car* car) {
@@ -49,7 +50,7 @@ void AutosimModel::loadDefaultTextureInCar (Car* car) {
 
 void AutosimModel::createDefaultSettingsForCar (Car* car) {
     car->size_object      = sf::Vector2f (1.9, 4.2);
-    car->weight_all_car   = 1500.0;
+    car->mass_of_car      = 150000.0;
     car->drag_coefficient = 0.15;
 
     car->wheel[0].is_rotating_wheel = 1;
@@ -57,8 +58,8 @@ void AutosimModel::createDefaultSettingsForCar (Car* car) {
     car->wheel[2].is_rotating_wheel = 0;
     car->wheel[3].is_rotating_wheel = 0;
 
-    car->wheel[0].is_pulling = false;
-    car->wheel[1].is_pulling = false;
+    car->wheel[0].is_pulling = true;
+    car->wheel[1].is_pulling = true;
     car->wheel[2].is_pulling = true;
     car->wheel[3].is_pulling = true;
 
@@ -77,10 +78,30 @@ void AutosimModel::createDefaultSettingsForCar (Car* car) {
 //    car.name_file_texture_wheel = "tire.png";
 }
 
-void AutosimModel::calculationNewPositions (unsigned long long different_time) {
-    float cycle_time = static_cast<float> (different_time) / 1000000;
+void AutosimModel::calculationNewPositions (unsigned long long different_time, ManipulatorData &last_manipulator_data) {
+    float last_cycle_time = static_cast<float> (different_time) / 1000000.f;
 
+    ManipulatorData empty_manipulator { 0.f, 0.f, 0.f, 0.f };
     for (size_t i = 0; i <  numActiveObjects; i++) {
-        objects[i]->calculationNewState ();
+        if (objects[i] == main_car)
+            objects[i]->calculationNewState (last_cycle_time, last_manipulator_data);
+        else
+            objects[i]->calculationNewState (last_cycle_time, empty_manipulator);
     }
 }
+
+void AutosimModel::createDefaultMap () {
+    auto map = new BaseObject;
+
+    if (!map->texture.loadFromFile ("map.png")) {
+        printf ("Error in read texture for map!\n");
+        exit (2);
+    }
+    map->size_object = sf::Vector2f(200.f, 200.f);
+
+    map->texture.setSmooth (true);
+
+    map->sprite.setTexture (&map->texture);
+    objects[0] = map;
+}
+

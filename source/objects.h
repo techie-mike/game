@@ -27,10 +27,12 @@ struct AdditionViewData {
     float scale;
 };
 
+
+
 struct BaseObject
 {
-    sf::Vector2f position;    // unit: metres
-    sf::Vector2f size_object; // unit: meters
+    sf::Vector2f position;      // unit: metres
+    sf::Vector2f size_object;   // unit: meters
 
     // Positive clockwise direction
     float rotation_angle{};     // unit: degrees
@@ -38,16 +40,16 @@ struct BaseObject
     sf::Texture texture;
     sf::RectangleShape sprite;
 
-    virtual void draw (const AdditionViewData &additionData) = 0;
-    virtual void calculationNewState() = 0;
+    virtual void draw (const AdditionViewData &additionData);
+    virtual void calculationNewState (float last_cycle_time, ManipulatorData &last_input_data);
 };
 
 struct BaseMovingObject :
         public BaseObject
 {
     // Positive clockwise direction
-    float angular_moment; // unit: Newton*metres/seconds
-    float moment_power;   // unit: Newton*metres
+    float angular_moment{}; // unit: Newton*metres/seconds
+    float moment_power{};   // unit: Newton*metres
 
     sf::Vector2f speed;   // unit: metres/seconds
     sf::Vector2f force;   // unit: Newton
@@ -62,14 +64,18 @@ struct Wheel :
     // forward - positive, back - negative
 
     float power_now;   // unit: Newton * meters / second
-    BaseObject* parent;
+    BaseMovingObject* parent;
 
 //    float getPowerOnWheel();
 
     void draw (const AdditionViewData &additionData) override;
-    void calculationNewState() override;
-private:
+    void calculationNewState (float last_cycle_time, ManipulatorData &last_input_data) override;
 
+    void calculationOfForceOnOneWheel ();
+
+private:
+    float getCoeffOfRollingFrictionOnArea();
+    float getCoeffOfSlidingFrictionForceOnArea();
 };
 
 struct Car :
@@ -82,10 +88,9 @@ struct Car :
     float power_engine_now;
     float drag_coefficient;
 
-    float weight_all_car{};
+    float mass_of_car{};
     ManipulatorData state_manipulator{};
 
-    void powerDistributionOnWheels();
 
 //===================================
 //  Front left  wheel - 0   item
@@ -112,7 +117,21 @@ struct Car :
    ~Car();
 
     void draw (const AdditionViewData &additionData) override;
-    void calculationNewState() override;
+    void calculationNewState (float last_cycle_time, ManipulatorData &last_input_data) override;
+
+//------------------------------PHYSICS-CAR-FUNCTIONS----------------------------------------
+    void getPowerEngine ();
+    void powerDistributionOnWheels();
+
+    void turnWheel ();
+
+    void calculationOfForcesOnWheels ();
+    void calculationOfForcesOnCar ();
+
+
+
+
+//---------------------------------------------------------------------------------------------
 };
 
 struct settingsCar {
